@@ -13,7 +13,7 @@
 \usepackage{braket}
 \usepackage{enumerate}
 \usepackage{paralist}
-
+\usepackage{listings}
 %
 % Basic Document Settings
 %
@@ -38,6 +38,31 @@
 \renewcommand\footrulewidth{0.4pt}
 
 \setlength\parindent{0pt}
+
+\definecolor{mGreen}{rgb}{0,0.6,0}
+\definecolor{mGray}{rgb}{0.5,0.5,0.5}
+\definecolor{mPurple}{rgb}{0.58,0,0.82}
+\definecolor{backgroundColour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{CStyle}{
+    backgroundcolor=\color{backgroundColour},
+    commentstyle=\color{mGreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{mGray},
+    stringstyle=\color{mPurple},
+    basicstyle=\footnotesize,
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=2,
+    language=C
+}
 
 %
 % Create Problem Sections
@@ -89,7 +114,7 @@
 %   - Author
 %
 
-\newcommand{\hmwkTitle}{Assignment\ \#1}
+\newcommand{\hmwkTitle}{Assignment\ \#2}
 \newcommand{\hmwkDueDate}{February 10, 2024, 11.59pm}
 \newcommand{\hmwkClass}{CS 201 - Data Structures and Algorithms II}
 \newcommand{\hmwkClassInstructor}{Muhammad Mobeen Movania (L1),\\ Syeda Saleha Raza (L2),\\ Faisal Alvi (L3, L4),\\ Abdullah Zafar (L5).}
@@ -205,92 +230,71 @@ For example if the stack contains the items 4, 3, 2, 9, 5, then after one applic
 \bigskip
 
 \newpage
-\begin{homeworkProblem} (40 points) [\textbf{Simplifying Postscript files by evaluating stack based expressions}] 
+\begin{homeworkProblem} (40 points) [\textbf{Optimizing particle-particle collisions through spatial hashing.}] 
 
-Postscript is a programming language that has been widely used for publishing documents. It is a stack based language that can be used to construct very simple to complex graphics as well as text. Modern documents in PDF (portable document format) use postscript as part of the document structure for rendering graphics.
-	
-Some examples of postscript graphics are given below:
-\begin{figure} [H]
-	\centering
-	\includegraphics[scale = 0.5]{fig/ps-examples.png}
-	\caption{Examples of Postscript Graphics}
+You will apply the knowledge of hashing to implement spatial hashing to resolve particle-particle collisions \cite{ref1} as shown in Figure \ref{fig3}. Template code has been shared with you which implements particle particle collisions through brute force method. However, the spatial hashing code does not implement spatial hashing for collision detection between particles. You can press 'h' key to toggle from using spatial hashing (default) to brute force method. As you would expect, the frame rate grinds down to a halt when brute force method is used. 
+
+\begin{figure}
+\centering
+\includegraphics[width=0.9\textwidth]{fig/fig3}
+\caption{N-particles collision demo with 100 particles.}
+\label{fig3}
 \end{figure}
 
-A postscript file (or encapsulated postscript file) has an extension .ps (or .eps) and can be opened and edited in a text editor. The drawing canvas has coordinates starting from (0, 0) at the bottom left corner of the page with coordinates increasing in the positive X and Y directions. As an example, the following postscript code on the left displays the image on the right.
+For this assignment, you need to add collision detection in the shared template code using spatial hashing. You can get the technical overview of the method using reference \cite{ref1} and a more implementation friendly description is shared in reference \cite{ref2}.  Relevant sections of the code are marked with TODOs so you can know where you need to add additional code.  
 
-\begin{figure} [H]
-	\centering
-	\includegraphics[scale = 0.5]{fig/ps-code-image-example.png}
-	\caption{Postscript Code (Left) with Example (Right)}
+If you have implemented spatial hashing based collision correctly, you should see collision detection and response happening at interactive framerates unlike the brute force method which makes the application unusable. Moreover, the UI should display the total collisions detected on screen which in the default template should be 0.
+
+\subsection{Setting up raylib}
+The basic skeleton code is built on top of raylib \cite{ref3}. You should be able to clone the assignment2 github repository and open the folder in VSCode. It should compile out of the box. If you want to get some details on the installation of raylib, the steps to install raylib are given for all platforms separately. For Windows OS, they are given here: \url{https://github.com/raysan5/raylib/wiki/Working-on-Windows}. For other OS, refer to \url{https://github.com/raysan5/raylib}.  Note for the given code, there is no additional step required. All setup is done already for you. For those of you working on non-Windows OSes, you may refer to the raylib installation steps or get connected with one of the course TAs.
+
+\subsection{Running the template code}
+Go to VSCode and open the template code folder. Press F5 or go to \textbf{Run menu} and then select \textbf{Start Debugging}. If all goes well, your should see the application run as shown in Figure \ref{fig1}. By default, the code uses spatial hashing with boundary collisions but it does not implement particle-particle collision. The brute force method does the collision both with the boundaries as well as with all other particles. You can press 'h' key to toggle using spatial hashing to use brute force method. Note that the performance of the application will slow down considerably if you use the brute force method for collision detection.
+
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{fig/fig1}
+\caption{Running the template code.}
+\label{fig1}
 \end{figure}
 
-For a more complete reference to postscript you may consult the following tutorial: Learn Postscript by Doing (\url{ https://staff.science.uva.nl/a.j.p.heck/Courses/Mastercourse2005/tutorial.pdf}) 
+\subsection{Template code framework details}
+The C++ template code uses a fairly simple C++ framework. There is a base class called \textbf{Demo}. This class sets up raylib and the event loop so that you do not have to repeat the steps in your own application. There are four pure virtual functions in the Demo class which are detailed as in Listing \ref{list1}.
+
+\begin{lstlisting}[language=C++, caption={Demo class pure virtual functions.}, label={list1}, style=CStyle]
+virtual void init() = 0;
+virtual void shutdown() = 0;
+virtual void draw() = 0;
+virtual void update() = 0;
+\end{lstlisting}
+The init function is where you would do initialization of your application data structures and other variables. The shutdown method will do the de-initialization that is removing every data structure and data that you will use in your application. The draw function will be where the displaying of the objects will take place and finally, the update function is where the physics simulation will be updated.  
+
+\subsection{Simple particle collision demo}
+Within the template framework code, we have given a simple example class inheriting from the \texttt{Demo} class called \texttt{BallCollisionDemo}. This class implements a single particle moving in the window and colliding with the screen bounds. You can see how we override the virtual methods of the \texttt{Demo} class.  This is given as a simple example for you to help understand the given \texttt{Demo} framework structure. In order to run this demo, please uncomment line 6 and comment line 7 of main.cpp and then press 'F5' or go to \textbf{Run menu} and then \textbf{Start Debugging}. If all goes well, you should see a single particle moving in the screen and colliding with the screen bounds as shown in Figure \ref{fig2}. Note that the \texttt{BallCollisionDemo} is for your understanding only. You will implement spatial hashing in \texttt{NBallsCollisionDemo}.
+
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{fig/fig2}
+\caption{Simple particle demo example.}
+\label{fig2}
+\end{figure}
+
+\subsection{N particles collision demo}
+Within the template framework code, we provide another example class inheriting fom the \texttt{Demo} class called \texttt{NBallsCollisionDemo}. This class implements 10000 particles moving in the window and colliding with the screen bounds. All of the code for initialization and handling of rendering of the 10000 particles is already taken care of for you. In addition, the basic screen collision is also implemented. We provide the brute force inter particle collision code, see lines 187-228 \texttt{SimpleFramework.cpp} but the spatial hashing based optimized inter particle collision detection is missing and this is what you are required to implement in the given framework. 
+
+For your assistance, the relevant sections of the code are marked with TODOs comments so you can add relevant code there. Please note that you are free to add code any where you deem fit but please do not remove the code that is already provided. For testing, you can change the last parameter of the NBallsCollisionDemo constructor call in main.cpp to 100 to reduce the total number of particles on screen. This will help you debug the code faster. Once you are fine with the code, dont forget to change the last parameter back to 10000.
+
+\subsection{Required Tasks}
+You should implement a C++ class Hash that should contain all necessary data structures and functions. You should provide at least two functions: a function to repopulate the hash grid given all particle positions and another function to return the list of particles in the hash grid where the given particle position hashes to. 
+
 \vspace{0.5cm}
 
-To display a postscript file, several programs can be used both online as well as offline. We use Inkscape (\url{https://inkscape.org/}) a free and open source vector graphics software to render images in this document.
-
-\textbf{Stacks:} Postscript uses a stack for all its computations including mathematical as well as stack based manipulation. A list of stack based operators for postscript are shown in the following tables:
-
-\begin{figure} [H]
-	\centering
-	\includegraphics[scale=0.50]{fig/math-stack-operators.png}
-	\caption{Arithmetic and Mathematical Operators}
-\end{figure}
-
-\begin{figure} [H]
-	\centering
-	\includegraphics[scale=0.50]{fig/stack-manipulation-operators.png}
-	\caption{Stack Manipulation Operators}
-\end{figure}
-
-For the purpose of this assignment, we will be using the following operators only: 
-
-\vspace{0.5cm}
-
-\texttt{add, sub, mul, div, sin, cos, mod, exp, sqrt, dup, exch, roll}. 
-
-\vspace{0.5cm}
-
-Additionally, you may use any other operators that may be required to implement the above list of operators.
-
-\vspace{0.5cm}
-
-\textbf{Variable or Procedure Declaration:} You can declare a variable (or a procedure) in postscript using a ``/'' preceding the variable (or procedure) name, followed by the variable (or procedure) definition, and ending with a ``def'' as shown in the following figure:
-
-\begin{figure} [H]
-	\centering
-	\includegraphics[scale=0.45]{fig/varOrProcDeclarations.png}
-	\caption{Variable Declarations: s, t and u are variables}
-\end{figure}
-
-Note that this file renders the same square as the previous example. However, here we declare three variables s, t and u. Furthermore,
+\textbf{Rubric:} Your submission will be evaluated on the following rubric. Your C++  \texttt{Hash} class should:
 \begin{itemize}
-\item \texttt{s t mul} evaluates to \texttt{13 7 mul} on the stack $\Rightarrow$ 13 $\cdot$ 7 = 91
-\item \texttt{u 4 exp 13 3 sub add} evaluates to \texttt{3 4 exp 13 3 sub add} $\Rightarrow$ 3$^4$ + 13 – 3 = 81 + 10 = 91, so a simplified version of the file will be:
-\end{itemize}
-\begin{figure} [H]
-	\centering
-	\includegraphics[scale=0.45]{fig/simplifiedFile.png}
-	\caption{Original File Vs Simplified File with Variable declaration}
-\end{figure}
-
-The following figure gives a procedure definition ``/dir'' with the original file, simplified file and the rendered image. Note that the procedure definition is enclosed in curly brackets (braces).
-\begin{figure} [H]
-	\centering
-	\includegraphics[scale=0.5]{fig/procedureDefinition.png}
-	\caption{Original File, Simplified File and And Rendered Image}
-\end{figure}
-\textbf{Objective:}
-Given a postscript file with operations from the tables (Arithmetic and Manipulation Operators), generate a simplified postscript file that does not contain any of the stack based operators – instead it contains the results of evaluations of these operators.
-
-\vspace{0.5cm}
-
-\textbf{Problem Description:} Design and implement a class \texttt{PostScriptFileSimplifier} in C++ that:
-\begin{itemize}
-\item (5 points) reads in a postscript file into an appropriate data structure of your choice, 
-\item (10 points) replaces all variable and procedure names with their simplified definitions in the data structure. This can be achieved by storing and utilizing information about variables and procedures along with the required functions in another data structure, 
-\item (20 points) has a function to simplify the postscript file by evaluating all stack based operations and removing these from the actual postscript file. You may declare a class \texttt{StackPostscript} that uses a Stack data structure and implements various stack based operations as shown in Figures 3 and 4,
-\item (5 points) writes the simplified postscript file as \texttt{<originalfile>-simplified.ps} (or .eps).
+\item (15 points) implement spatial hashing using appropriate data structures, 
+\item (10 points) provide correct output for different configration of particle count and particle radii (Note that all particles will have the same radii.), 
+\item (10 points) provide necessary functions to accelerate the neighbor search 
+\item (5 points) use proper naming convention with well commented code.
 \end{itemize}
 \end{homeworkProblem}
 
@@ -300,7 +304,19 @@ We are providing you with two folders: \texttt{input} containing input files and
 Further submission guidelines will be provided to you later.
 \\
 
-Due date: Saturday, 10 March 2024, 11.59pm.
+Due date: Sunday, 10 March 2024, 11.59pm.
+
+\begin{thebibliography}{9}
+\bibitem{ref1} 
+Matthias Teschner, Bruno Heidelberger, Matthias Muller, Danat Pomeranets, and Markus Gross, \textit{"Optimized Spatial Hashing for Collision Detection of Deformable Objects"}, in Proceedings of the 8th Workshop on Vision, Modeling, and Visualization (VMV 2003), Munich, Germany, 2003.
+
+\bibitem{ref2}
+Blogpost: The mind of Conkerjo, \textit{Spatial hashing implementation for fast 2D collisions}, available online: https://conkerjo.wordpress.com/2009/06/13/spatial-hashing-implementation-for-fast-2d-collisions/
+
+\bibitem{ref3}
+Ramon Santamaria (@raysan5), {raylib: a simple and easy-to-use library to enjoy videogames programming}, available online: https://www.raylib.com/
+ 
+\end{thebibliography}
 
 \end{document}
 
