@@ -184,46 +184,38 @@ The solution to program 2 will be graded for correctness and structure by testin
 \end{itemize}
 \newpage
 \begin{homeworkProblem}
-(20 points) [\textbf{Amortized Analysis}] Let us define a \texttt{stop-min-stack} with a stack as the underlying data structure, which stores a sequence of items and has the following operations:
-\begin{enumerate}
-	\item \texttt{push(\textit{x})} adds the item \texttt{\textit{x}} to the top of the underlying stack.
-	\item \texttt{peek()} returns the item at the top of the underlying stack without removing it.
-	\item \texttt{stop-min-pop()} pops a local minimum from the existing items in the stack. This operation works as follows:
-	\begin{enumerate}[(a)]
-		\item removes an existing item from the stack using \texttt{pop()}, (if the stack was empty before the \texttt{pop()}, NULL is returned; if the stack is empty as a result of the \texttt{pop()}, the popped item is returned) 
-		\item tests whether the popped item is greater than or equal to the current item at the top of the underlying stack using \texttt{peek()}. 
-		\item If yes, the recently popped item is discarded. 
-		\item Steps (a) - (c) are repeated as a loop until the recently popped item is less than the topmost item in the stack or if the underlying stack is empty. 
-		\item Finally, the recently popped item is returned.
-	\end{enumerate}
-\end{enumerate}
-For example if the stack contains the items 4, 3, 2, 9, 5, then after one application of \texttt{stop-min-pop()}, the item 2 will be returned and the stack will have the elements 9, 5 as shown below:
-% Please add the following required packages to your document preamble:
-% \usepackage{graphicx}
+(20 points) [\textbf{Analysis}] Suppose you have a hash function $h(x)$ which is defined as follows:  
+\begin{equation}
+\label{eq1}
+h(x) = x^2  \%  4
+\end{equation}
+where, $x$ is the given key. The function $h(x)$ simply squares the given key and then finds its remainder using 4. Let us evaluate the outputs from this function for different values of x starting from x=0 to x=4. We get the following outputs:
+\begin{eqnarray*}
+x(0) = 0 \% 4 = 0 \\
+x(1) = 1^2 \% 4 = 1 \\
+x(2) = 2^2 \% 4 = 0 \\
+x(3) = 3^2 \% 4 = 1 \\
+x(4) = 4^2 \% 4 = 0 \\
+\end{eqnarray*}
+So we notice that the function returns 0 for even numbers and 1 for odd numbers. 
 
-\begin{table}[h]
-	\centering
-	\begin{tabular}{|c|c|c|}
-			4 &  &   \\ \cline{1-1}
-			3 &  &   \\ \cline{1-1}
-			2 &  &   \\ \cline{1-1} \cline{3-3} 
-			9 &  & 9 \\ \cline{1-1} \cline{3-3} 
-			5 &  & 5 \\ \cline{1-1} \cline{3-3} 
-		\end{tabular}%
-	\caption{\texttt{Stop-min-stack} before and after one application of \texttt{stop-min-pop()}}
-\end{table}
-
-%%\begin{figure} [H]
-%% 	\centering
-%% 	\includegraphics[scale = 0.7]{bell-states.png}
-%% 	\caption{The Four Bell States $\ket{\phi^+}$, %%$\ket{\phi^-}$, $\ket{\psi^+}$, $\ket{\psi^-}$}
-%%\end{figure}
-		
 \begin{enumerate}[(a)]
-\item (5 points) Using an underlying Stack which has only \texttt{push}, \texttt{pop} and \texttt{peek} as its operations with constant time complexity, write pseudocode for the operation \texttt{stop-min-pop()}. What is the time complexity of \texttt{stop-min-pop()} in the worst case for a stack of size $n$? 
-\item (5 points) Give an argument using worst case analysis that if \texttt{stop-min-pop()} is applied $n$ times to an arbitrary stack of size $n$, the worst case time complexity can be O$(n^2)$, thereby giving a cost of O$(n)$ per operation.
+\item (5 points) The characteristics of a good hash function include:
+\begin{itemize}
+\item The hash value is fully determined by the data being hashed. 
+\item The hash function uses all the input data. 
+\item The hash function "uniformly" distributes the data across the entire set of possible hash values.
+\end{itemize}
 
-\item (10 points) Using amortized analysis, show that the amortized cost of applying \texttt{stop-min-pop()} $n$ times to an arbitrary stack of size $n$ is actually O(1) per operation.
+Based on the characteristics of a good hash function, prove that the function given in Eq. \ref{eq1} is not a good hash function? 
+\item (5 points) Think of some modifications to the hash function given in Eq. \ref{eq1} to help meet the characteristics of a good hash function?
+\item (5 points) Suppose, we change the hash function given in Eq. \ref{eq1} to:
+\begin{equation}
+\label{eq2}
+h(x) = x^2  \%  5
+\end{equation}
+Compare the behavior of this hash function to the hash function given in Eq. \ref{eq1}. Do you see any difference? Comment on your findings?
+\item (5 points) Which collision strategy do you think you will use for collision resolution for Eq. \ref{eq2}. Justify your choice with reasoning?
 \end{enumerate}
 
 \end{homeworkProblem}
@@ -232,13 +224,13 @@ For example if the stack contains the items 4, 3, 2, 9, 5, then after one applic
 \newpage
 \begin{homeworkProblem} (40 points) [\textbf{Optimizing particle-particle collisions through spatial hashing.}] 
 
-You will apply the knowledge of hashing to implement spatial hashing to resolve particle-particle collisions \cite{ref1} as shown in Figure \ref{fig3}. Template code has been shared with you which implements particle particle collisions through brute force method. However, the spatial hashing code does not implement spatial hashing for collision detection between particles. You can press 'h' key to toggle from using spatial hashing (default) to brute force method. As you would expect, the frame rate grinds down to a halt when brute force method is used. 
+You will apply the knowledge of hashing to implement spatial hashing to resolve particle-particle collisions \cite{ref1} as shown in Figure \ref{fig1}. Template code has been shared with you which implements particle particle collisions through brute force method. However, the spatial hashing code does not implement spatial hashing for collision detection between particles. You can press 'h' key to toggle from using spatial hashing (default) to brute force method. As you would expect, the frame rate grinds down to a halt when brute force method is used. 
 
 \begin{figure}
 \centering
-\includegraphics[width=0.9\textwidth]{fig/fig3}
+\includegraphics[width=0.9\textwidth]{fig/fig1}
 \caption{N-particles collision demo with 100 particles.}
-\label{fig3}
+\label{fig1}
 \end{figure}
 
 For this assignment, you need to add collision detection in the shared template code using spatial hashing. You can get the technical overview of the method using reference \cite{ref1} and a more implementation friendly description is shared in reference \cite{ref2}.  Relevant sections of the code are marked with TODOs so you can know where you need to add additional code.  
@@ -249,13 +241,13 @@ If you have implemented spatial hashing based collision correctly, you should se
 The basic skeleton code is built on top of raylib \cite{ref3}. You should be able to clone the assignment2 github repository and open the folder in VSCode. It should compile out of the box. If you want to get some details on the installation of raylib, the steps to install raylib are given for all platforms separately. For Windows OS, they are given here: \url{https://github.com/raysan5/raylib/wiki/Working-on-Windows}. For other OS, refer to \url{https://github.com/raysan5/raylib}.  Note for the given code, there is no additional step required. All setup is done already for you. For those of you working on non-Windows OSes, you may refer to the raylib installation steps or get connected with one of the course TAs.
 
 \subsection{Running the template code}
-Go to VSCode and open the template code folder. Press F5 or go to \textbf{Run menu} and then select \textbf{Start Debugging}. If all goes well, your should see the application run as shown in Figure \ref{fig1}. By default, the code uses spatial hashing with boundary collisions but it does not implement particle-particle collision. The brute force method does the collision both with the boundaries as well as with all other particles. You can press 'h' key to toggle using spatial hashing to use brute force method. Note that the performance of the application will slow down considerably if you use the brute force method for collision detection.
+Go to VSCode and open the template code folder. Press F5 or go to \textbf{Run menu} and then select \textbf{Start Debugging}. If all goes well, your should see the application run as shown in Figure \ref{fig2}. By default, the code uses spatial hashing with boundary collisions but it does not implement particle-particle collision. The brute force method does the collision both with the boundaries as well as with all other particles. You can press 'h' key to toggle using spatial hashing to use brute force method. Note that the performance of the application will slow down considerably if you use the brute force method for collision detection.
 
 \begin{figure}
 \centering
-\includegraphics[width=\textwidth]{fig/fig1}
+\includegraphics[width=\textwidth]{fig/fig2}
 \caption{Running the template code.}
-\label{fig1}
+\label{fig2}
 \end{figure}
 
 \subsection{Template code framework details}
@@ -270,13 +262,13 @@ virtual void update() = 0;
 The init function is where you would do initialization of your application data structures and other variables. The shutdown method will do the de-initialization that is removing every data structure and data that you will use in your application. The draw function will be where the displaying of the objects will take place and finally, the update function is where the physics simulation will be updated.  
 
 \subsection{Simple particle collision demo}
-Within the template framework code, we have given a simple example class inheriting from the \texttt{Demo} class called \texttt{BallCollisionDemo}. This class implements a single particle moving in the window and colliding with the screen bounds. You can see how we override the virtual methods of the \texttt{Demo} class.  This is given as a simple example for you to help understand the given \texttt{Demo} framework structure. In order to run this demo, please uncomment line 6 and comment line 7 of main.cpp and then press 'F5' or go to \textbf{Run menu} and then \textbf{Start Debugging}. If all goes well, you should see a single particle moving in the screen and colliding with the screen bounds as shown in Figure \ref{fig2}. Note that the \texttt{BallCollisionDemo} is for your understanding only. You will implement spatial hashing in \texttt{NBallsCollisionDemo}.
+Within the template framework code, we have given a simple example class inheriting from the \texttt{Demo} class called \texttt{BallCollisionDemo}. This class implements a single particle moving in the window and colliding with the screen bounds. You can see how we override the virtual methods of the \texttt{Demo} class.  This is given as a simple example for you to help understand the given \texttt{Demo} framework structure. In order to run this demo, please uncomment line 6 and comment line 7 of main.cpp and then press 'F5' or go to \textbf{Run menu} and then \textbf{Start Debugging}. If all goes well, you should see a single particle moving in the screen and colliding with the screen bounds as shown in Figure \ref{fig3}. Note that the \texttt{BallCollisionDemo} is for your understanding only. You will implement spatial hashing in \texttt{NBallsCollisionDemo}.
 
 \begin{figure}
 \centering
-\includegraphics[width=\textwidth]{fig/fig2}
+\includegraphics[width=\textwidth]{fig/fig3}
 \caption{Simple particle demo example.}
-\label{fig2}
+\label{fig3}
 \end{figure}
 
 \subsection{N particles collision demo}
@@ -291,9 +283,9 @@ You should implement a C++ class Hash that should contain all necessary data str
 
 \textbf{Rubric:} Your submission will be evaluated on the following rubric. Your C++  \texttt{Hash} class should:
 \begin{itemize}
-\item (15 points) implement spatial hashing using appropriate data structures, 
-\item (10 points) provide correct output for different configration of particle count and particle radii (Note that all particles will have the same radii.), 
-\item (10 points) provide necessary functions to accelerate the neighbor search 
+\item (15 points) implement spatial hashing using appropriate data structures in the \textbf{Hash} class, 
+\item (10 points) provide correct output for different configurations of particle count and particle radii (Note that all particles will have the same radii but you should set different values of radii to create smaller or larger particles.), 
+\item (10 points) provide necessary functions to accelerate the neighbor search by using the spatial hash grid. 
 \item (5 points) use proper naming convention with well commented code.
 \end{itemize}
 \end{homeworkProblem}
