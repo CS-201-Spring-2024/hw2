@@ -184,38 +184,20 @@ The solution to program 2 will be graded for correctness and structure by testin
 \end{itemize}
 \newpage
 \begin{homeworkProblem}
-(20 points) [\textbf{Analysis}] Suppose you have a hash function $h(x)$ which is defined as follows:  
+(20 points) [\textbf{Analysis}] Let us consider the quadratic probing scheming for a hash table of size 7 with the hash function as:
 \begin{equation}
 \label{eq1}
-h(x) = x^2  \%  4
+h(x) = x + i^2  \%  7, 
 \end{equation}
-where, $x$ is the given key. The function $h(x)$ simply squares the given key and then finds its remainder using 4. Let us evaluate the outputs from this function for different values of x starting from x=0 to x=4. We get the following outputs:
-\begin{eqnarray*}
-x(0) = 0 \% 4 = 0 \\
-x(1) = 1^2 \% 4 = 1 \\
-x(2) = 2^2 \% 4 = 0 \\
-x(3) = 3^2 \% 4 = 1 \\
-x(4) = 4^2 \% 4 = 0 \\
-\end{eqnarray*}
-So we notice that the function returns 0 for even numbers and 1 for odd numbers. 
-
+where, i=0,1,2,3,... in case of a collision.
 \begin{enumerate}[(a)]
-\item (5 points) The characteristics of a good hash function include:
-\begin{itemize}
-\item The hash value is fully determined by the data being hashed. 
-\item The hash function uses all the input data. 
-\item The hash function "uniformly" distributes the data across the entire set of possible hash values.
-\end{itemize}
-
-Based on the characteristics of a good hash function, prove that the function given in Eq. \ref{eq1} is not a good hash function? 
-\item (5 points) Think of some modifications to the hash function given in Eq. \ref{eq1} to help meet the characteristics of a good hash function?
-\item (5 points) Suppose, we change the hash function given in Eq. \ref{eq1} to:
+\item (10 points) Show/Prove that the above parameters do not form a good hash function since it violates the property that a hash function must map to all addresses within a hash table.
+\item (10 points) Show that by using the following hash function with quadratic probing, i.e. alternately adding and subtracting $i^2$, the hash function maps to all addresses within the hashtable.
 \begin{equation}
-\label{eq2}
-h(x) = x^2  \%  5
+\label{eq1}
+h(x) = x \pm i^2  \%  7,
 \end{equation}
-Compare the behavior of this hash function to the hash function given in Eq. \ref{eq1}. Do you see any difference? Comment on your findings?
-\item (5 points) Which collision strategy do you think you will use for collision resolution for Eq. \ref{eq2}. Justify your choice with reasoning?
+where, i=0,1,2,3,... in case of a collision.
 \end{enumerate}
 
 \end{homeworkProblem}
