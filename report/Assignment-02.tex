@@ -184,20 +184,14 @@ The solution to program 2 will be graded for correctness and structure by testin
 \end{itemize}
 \newpage
 \begin{homeworkProblem}
-(20 points) [\textbf{Analysis}] Let us consider the quadratic probing scheming for a hash table of size 7 with the hash function as:
-\begin{equation}
-\label{eq1}
-h(x) = x + i^2  \%  7, 
-\end{equation}
-where, i=0,1,2,3,... in case of a collision.
+(20 points) [\textbf{Analysis}] Suppose that, instead of promoting an element from $L_{i-1}$ into $L_i$ based on a coin toss, we promote it with some probability $p$, $0 < p < 1$.
+ 
 \begin{enumerate}[(a)]
-\item (10 points) Show/Prove that the above parameters do not form a good hash function since it violates the property that a hash function must map to all addresses within a hash table.
-\item (10 points) Show that by using the following hash function with quadratic probing, i.e. alternately adding and subtracting $i^2$, the hash function maps to all addresses within the hashtable.
-\begin{equation}
-\label{eq1}
-h(x) = x \pm i^2  \%  7,
-\end{equation}
-where, i=0,1,2,3,... in case of a collision.
+\item (5 points) Show that, with this modification, the expected length of a search
+path is at most $\frac{1}{p} log_{\frac{1}{p}}(n)$.
+\item (5 points) What is the value of $p$ that minimizes the preceding expression?
+\item (5 points) What is the expected height of the skiplist?
+\item (5 points) What is the expected number of nodes in the skiplist?
 \end{enumerate}
 
 \end{homeworkProblem}
